@@ -1,4 +1,5 @@
 import React from "react";
+import DayListItem from "components/DayListItem";
 
 import "components/Application.scss";
 
@@ -21,6 +22,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        < DayListItem />
       </section>
     </main>
   );
