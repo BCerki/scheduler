@@ -7,10 +7,10 @@ export default function DayList(props) {
     return (
       <DayListItem
         key={day.id}
-        name={day.name}
+        name={day.name} //do I need?
         spots={day.spots}
         selected={day.name === props.day}
-        setDay={props.setDay}
+        setDay={event => props.setDay(day.name)} //name or id?
       />)
   })
 
