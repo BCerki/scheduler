@@ -1,22 +1,12 @@
 const getAppointmentsForDay = function (state, day) {
-  //grab a particular day's appointments' ids
-  let appointmentIds = [];
-  for (const weekday of state.days) {
-    if (weekday.name === day) {
-      appointmentIds = [...weekday.appointments]
-    }
+  //grab a particular day's appointments
+  const dailyAppointments = state.days.find(weekday => weekday.name === day);
+  //if the day has appointments, pull the appointment details based on their id number
+  if (dailyAppointments) {
+    return dailyAppointments.appointments.map(appt => state.appointments[appt])
   }
+  return [];
 
-  //pull the appointment details based on their id number
-  const appointmentsForDay = [];
-
-  for (const key in state.appointments) {
-    if (appointmentIds.includes(Number(key))) {
-      appointmentsForDay.push(state.appointments[key]); //is pushing allowed in helper functions? Mutating state?
-    }
-  }
-
-  return appointmentsForDay;
 
 
 };
@@ -52,4 +42,4 @@ export { getAppointmentsForDay };
 //   }
 // };
 
-// getAppointmentsForDay(state, "Tuesday")
+// console.log(getAppointmentsForDay(state, "Tuesday"))
