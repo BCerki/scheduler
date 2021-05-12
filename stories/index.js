@@ -10,6 +10,8 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Form from "components/Appointment/Form"
+
 //Appointment imports
 import Appointment from "components/Appointment"
 import Header from "components/Appointment/Header"
@@ -168,3 +170,24 @@ storiesOf("Appointment", module)
     message="Could not delete appointment."
     onClose={action("onClose")} />)
 
+
+//Form
+//Appointment
+storiesOf("Form", module)
+  .addParameters({
+    backgrounds: [{ name: "white", value: "#fff", default: true }]
+  })
+  .add("Form on Edit", () => <Form
+    name="Brianna"
+    interviewers={interviewers}
+    interviewer={interviewer.id}
+    onSave={action("onSave")}
+    onCancel={action("onCancel")}
+
+  />)
+  .add("Form on Create", () => <Form
+    interviewers={interviewers}
+    onSave={action("onSave")}
+    onCancel={action("onCancel")}
+
+  />)

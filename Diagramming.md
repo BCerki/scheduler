@@ -11,3 +11,25 @@
 * interviewers:array - an array of objects containing the information of each interviewer
 * interviewer:number - the id of an interviewer
 * setInterviewer:function - a function that accepts an interviewer id
+
+### The Form component should take the following props:
+
+name:String
+interviewers:Array
+interviewer:Number
+onSave:Function
+onCancel:Function
+What's comin
+
+As part of our Edit story, the Form component should take the following props:
+
+name:String
+interviewers:Array
+interviewer:Number
+onSave:Function
+onCancel:Function
+As part of our Create story, the Form component should take the following props:
+
+interviewers:Array
+onSave:Function
+onCancel:Function
