@@ -8,46 +8,6 @@ import axios from 'axios';
 
 import "components/Application.scss";
 
-//Test Data
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 5,
-    time: "4pm",
-  }
-];
 
 
 
@@ -59,19 +19,30 @@ export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // appointments: {}
+    appointments: {}
   })
+
+  const dailyAppointments = [];
 
   //functions to update state
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState(prev => ({ ...prev, days }));
+  // const setDays = days => setState(prev => ({ ...prev, days }));
 
 
   useEffect(() => {
-    axios.get('/api/days')
-      .then(response => {
-        console.log(response.data)
-        setDays(response.data)
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
+    ])
+      .then(all => {
+        setState(prev => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data
+        }))
+        // console.log(response.data)
+        // setDays(response.data)
       });
   }, [])
 
@@ -101,7 +72,7 @@ export default function Application() {
         />
       </section>
       <section className="schedule">
-        {appointments.map(appointment => {
+        {dailyAppointments.map(appointment => {
           return <Appointment
             key={appointment.id}
             {...appointment}
