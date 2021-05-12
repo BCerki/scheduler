@@ -1,16 +1,20 @@
+//Import axois, React, and helper functions
+import axios from 'axios';
 import React, { useState, useEffect } from "react";
+import { getAppointmentsForDay } from "helpers/selectors";
+
+//Import components
 import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import axios from 'axios';
 
 
-
+//Import styles
 import "components/Application.scss";
 
 
 
-
+//Application component
 export default function Application() {
 
   // const [day, setDay] = useState([]);
@@ -22,7 +26,7 @@ export default function Application() {
     appointments: {}
   })
 
-  const dailyAppointments = [];
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   //functions to update state
   const setDay = day => setState({ ...state, day });
