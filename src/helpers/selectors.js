@@ -8,10 +8,31 @@ const getAppointmentsForDay = function (state, day) {
   return [];
 
 
+};
+const getInterview = function (state, interview) {
+  //validate--if there's no interview, return null
+  if (!interview) {
+    return null;
+  }
+
+  //grab the interviewer's details based on their id
+  let interviewerDetails = null;
+  for (const key in state.interviewers) {
+    if (Number(key) === interview.interviewer) {
+      interviewerDetails = state.interviewers[key];
+    }
+  }
+
+  return {
+    student: interview.student,
+    interviewer: interviewerDetails
+  };
+
+
 
 };
-export { getAppointmentsForDay };
-//Test Code
+export { getAppointmentsForDay, getInterview };
+////Test Code
 // const state = {
 //   days: [
 //     {
@@ -39,7 +60,28 @@ export { getAppointmentsForDay };
 //       time: "4pm",
 //       interview: { student: "Chad Takahashi", interviewer: 2 }
 //     }
+//   },
+//   interviewers: {
+//     "1": {
+//       "id": 1,
+//       "name": "Sylvia Palmer",
+//       "avatar": "https://i.imgur.com/LpaY82x.png"
+//     },
+//     "2": {
+//       id: 2,
+//       name: "Tori Malcolm",
+//       avatar: "https://i.imgur.com/Nmx0Qxo.png"
+//     }
 //   }
 // };
 
-// console.log(getAppointmentsForDay(state, "Tuesday"))
+// // console.log(getAppointmentsForDay(state, "Tuesday"))
+
+// getInterview(state, {
+//   "id": 1,
+//   "time": "12pm",
+//   "interview": {
+//     "student": "Lydia Miller-Jones",
+//     "interviewer": 1
+//   }
+// })
