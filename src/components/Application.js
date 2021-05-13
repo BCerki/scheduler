@@ -1,7 +1,7 @@
 //Import axois, React, and helper functions
 import axios from 'axios';
 import React, { useState, useEffect } from "react";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 //Import components
 import DayListItem from "components/DayListItem";
@@ -81,7 +81,9 @@ export default function Application() {
 
           return <Appointment
             key={appointment.id}
-            {...appointment}
+            id={appointment.id}
+            time={appointment.time}
+            interview={appointment.interview}
           />
         })
         }
