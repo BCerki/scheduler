@@ -36,6 +36,20 @@ export default function Application() {
   const bookInterview = function (id, interview) {
     console.log('id:', id, 'interview:', interview);
 
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments
+    })
   };
 
 
