@@ -38,8 +38,8 @@ export default function Appointment(props) {
       })
   };
 
-  function cancel(id) {
-    transition(DELETING);
+  function cancel(event) {
+    transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(res => {
         transition(EMPTY);
@@ -104,7 +104,8 @@ export default function Appointment(props) {
 
         {mode === ERROR_SAVE && (
           <Error
-            message={"Error saving"} />
+            message={"Error saving"}
+            onClose={() => back()} />
         )}
         {mode === ERROR_DELETE && (
           <Error
