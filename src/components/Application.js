@@ -1,7 +1,7 @@
 //Import axois, React, and helper functions
 import axios from 'axios';
 import React, { useState, useEffect } from "react";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 //Import components
 import DayListItem from "components/DayListItem";
@@ -19,18 +19,20 @@ export default function Application() {
 
   // const [day, setDay] = useState([]);
   // const [days, setDays] = useState([]);
-
+  //State
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   })
+  const setDay = day => setState({ ...state, day });
+
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
+  const dailyInterviewers = getInterviewersForDay(state, state.day)
 
-  const setDay = day => setState({ ...state, day });
 
   useEffect(() => {
     Promise.all([
@@ -84,7 +86,7 @@ export default function Application() {
             id={appointment.id}
             time={appointment.time}
             interview={interview}
-            interviewers={state.interviewers}
+            interviewers={dailyInterviewers}
           />
         })
         }
