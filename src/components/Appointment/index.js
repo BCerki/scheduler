@@ -10,6 +10,13 @@ export default function Appointment(props) {
 
   console.log('props in index.js:', props)
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    }
+  };
+
   //mode constants
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -32,7 +39,7 @@ export default function Appointment(props) {
         {mode === CREATE &&
           <Form
             interviewers={props.interviewers}
-            onSave={props.onSave}
+            onSave={save}
             onCancel={() => { back() }} />}
 
         {mode === SHOW && (
