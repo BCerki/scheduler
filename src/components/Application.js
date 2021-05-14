@@ -80,6 +80,13 @@ export default function Application() {
       .catch(err => console.log(err.message))
   };
 
+  // function handleEdit(interview) {
+  //   console.log('interview________', interview)
+  //   const interviewers = state.interviewers;
+  //   interviewers[interview.interviewer.id]
+  //   // transition(EDIT);
+  // }
+
   //Custom hook
   useEffect(() => {
     Promise.all([
