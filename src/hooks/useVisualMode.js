@@ -11,6 +11,7 @@ const useVisualMode = function (initialMode) {
     }
     //if replace is true, replace the current mode with the new mode
     setHistory(prev => [newMode, ...prev.slice(1)])
+    console.log('history in transition', history)
 
     return history[0]
   }
@@ -20,6 +21,7 @@ const useVisualMode = function (initialMode) {
       return;
     }
     setHistory(prev => prev.slice(1))
+    console.log('history in back', history)
     return history[0];
   }
 

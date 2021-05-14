@@ -28,12 +28,18 @@ export default function Application() {
   })
   const setDay = day => setState({ ...state, day });
 
-
+  //Formatting data
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const dailyInterviewers = getInterviewersForDay(state, state.day)
 
+  const bookInterview = function (id, interview) {
+    console.log(id, interview);
 
+  };
+
+
+  //Custom hook
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -87,6 +93,7 @@ export default function Application() {
             time={appointment.time}
             interview={interview}
             interviewers={dailyInterviewers}
+            bookInterview={bookInterview}
           />
         })
         }
