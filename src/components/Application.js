@@ -55,8 +55,7 @@ export default function Application() {
           appointments
         })
       })
-      //confirm .message is correct t/o
-      .catch(err => console.log(err.message))
+    // .catch(err => console.log('Error:', err.message))
   };
 
   const cancelInterview = function (id) {
@@ -77,15 +76,11 @@ export default function Application() {
           appointments
         })
       })
-      .catch(err => console.log(err.message))
+    // .catch(err => {
+    //   console.log('Error:', err.message)
+    // })
   };
 
-  // function handleEdit(interview) {
-  //   console.log('interview________', interview)
-  //   const interviewers = state.interviewers;
-  //   interviewers[interview.interviewer.id]
-  //   // transition(EDIT);
-  // }
 
   //Custom hook
   useEffect(() => {

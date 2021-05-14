@@ -6,6 +6,7 @@ import Empty from "components/Appointment/Empty"
 import Form from "components/Appointment/Form"
 import Status from "components/Appointment/Status"
 import Confirm from "components/Appointment/Confirm"
+import Error from "components/Appointment/Error"
 import useVisualMode from "../../hooks/useVisualMode"
 
 export default function Appointment(props) {
@@ -17,6 +18,8 @@ export default function Appointment(props) {
   const CONFIRM = "CONFIRM";
   const DELETING = "DELETING";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   console.log('props in index.js:', props)
 
@@ -30,6 +33,9 @@ export default function Appointment(props) {
       .then(res => {
         transition(SHOW);
       })
+      .catch(res => {
+        transition(ERROR_SAVE);
+      })
   };
 
   function cancel(id) {
@@ -38,7 +44,10 @@ export default function Appointment(props) {
       .then(res => {
         transition(EMPTY);
       })
-  }
+      .catch(res => {
+        transition(ERROR_DELETE)
+      })
+  };
 
 
 
@@ -91,6 +100,15 @@ export default function Appointment(props) {
             onEdit={() => transition(EDIT)}
             onDelete={() => transition(CONFIRM)}
           />
+        )}
+
+        {mode === ERROR_SAVE && (
+          <Error
+            message={"Error saving"} />
+        )}
+        {mode === ERROR_DELETE && (
+          <Error
+            message={"Error deleting"} />
         )}
 
       </article>
