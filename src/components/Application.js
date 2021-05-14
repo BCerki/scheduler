@@ -83,7 +83,8 @@ export default function Application() {
             key={appointment.id}
             id={appointment.id}
             time={appointment.time}
-            interview={appointment.interview}
+            interview={interview}
+            interviewers={state.interviewers}
           />
         })
         }
