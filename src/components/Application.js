@@ -50,6 +50,15 @@ export default function Application() {
       ...state,
       appointments
     })
+
+    return axios.put(`/api/appointments/${id}`, { interview })
+      .then(resolve => {
+
+        console.log('is this fixing the problem? resolve is:', resolve)
+        // setState({
+        // what do I actually want to set state to?
+      })
+      .catch(err => console.log(err.message))
   };
 
 
