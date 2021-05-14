@@ -6,9 +6,11 @@ const getAppointmentsForDay = function (state, day) {
     return dailyAppointments.appointments.map(appt => state.appointments[appt])
   }
   return [];
-
-
 };
+
+
+
+
 const getInterview = function (state, interview) {
   //validate--if there's no interview, return null
   if (!interview) {
@@ -27,11 +29,18 @@ const getInterview = function (state, interview) {
     student: interview.student,
     interviewer: interviewerDetails
   };
-
-
-
 };
-export { getAppointmentsForDay, getInterview };
+
+const getInterviewersForDay = function (state, day) {
+  //grab a particular day's appointments
+  const dailyInterviewers = state.days.find(weekday => weekday.name === day);
+  //if the day has appointments, pull the appointment details based on their id number
+  if (dailyInterviewers) {
+    return dailyInterviewers.interviewers.map(id => state.interviewers[id])
+  }
+  return [];
+};
+export { getAppointmentsForDay, getInterview, getInterviewersForDay };
 ////Test Code
 // const state = {
 //   days: [
