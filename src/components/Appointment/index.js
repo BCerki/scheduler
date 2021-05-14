@@ -5,6 +5,7 @@ import Show from "components/Appointment/Show"
 import Empty from "components/Appointment/Empty"
 import Form from "components/Appointment/Form"
 import Status from "components/Appointment/Status"
+import Confirm from "components/Appointment/Confirm"
 import useVisualMode from "../../hooks/useVisualMode"
 
 export default function Appointment(props) {
@@ -13,6 +14,8 @@ export default function Appointment(props) {
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
+  const CONFIRM = "CONFIRM"
+  const DELETING = "DELETING"
 
   console.log('props in index.js:', props)
 
@@ -28,11 +31,19 @@ export default function Appointment(props) {
       })
   };
 
+  function cancel(id) {
+    transition(DELETING);
+    props.cancelInterview(props.id)
+      .then(res => {
+        transition(EMPTY);
+      })
+  }
 
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY)
 
   //props could be wrong below
+  //when do I need to use callbacks vs functions in my components????? FIXFIX
   return (
     <>
       <Header time={props.time} />
@@ -46,6 +57,15 @@ export default function Appointment(props) {
           <Status
             message={"Saving..."} />}
 
+        {mode === CONFIRM &&
+          <Confirm
+            onCancel={() => back()}
+            onConfirm={cancel} />}
+
+        {mode === DELETING &&
+          <Status
+            message={"Deleting..."} />}
+
         {mode === CREATE &&
           <Form
             interviewers={props.interviewers}
@@ -56,6 +76,7 @@ export default function Appointment(props) {
           <Show
             student={props.interview.student}
             interviewer={props.interview.interviewer}
+            onDelete={() => transition(CONFIRM)}
           />
         )}
 

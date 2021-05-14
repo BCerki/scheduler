@@ -33,8 +33,10 @@ export default function Application() {
 
   const dailyInterviewers = getInterviewersForDay(state, state.day)
 
+
+  //interview manipulation functions
   const bookInterview = function (id, interview) {
-    console.log('id:', id, 'interview:', interview);
+    // console.log('id:', id, 'interview:', interview);
 
     const appointment = {
       ...state.appointments[id],
@@ -46,8 +48,29 @@ export default function Application() {
       [id]: appointment
     };
 
-
     return axios.put(`/api/appointments/${id}`, { interview })
+      .then(resolve => {
+        setState({
+          ...state,
+          appointments
+        })
+      })
+      //confirm .message is correct t/o
+      .catch(err => console.log(err.message))
+  };
+
+  const cancelInterview = function (id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
         setState({
           ...state,
@@ -56,7 +79,6 @@ export default function Application() {
       })
       .catch(err => console.log(err.message))
   };
-
 
   //Custom hook
   useEffect(() => {
@@ -113,6 +135,7 @@ export default function Application() {
             interview={interview}
             interviewers={dailyInterviewers}
             bookInterview={bookInterview}
+            cancelInterview={cancelInterview}
           />
         })
         }
