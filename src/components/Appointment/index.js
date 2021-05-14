@@ -33,8 +33,8 @@ export default function Appointment(props) {
       .then(res => {
         transition(SHOW);
       })
-      .catch(res => {
-        transition(ERROR_SAVE);
+      .catch(err => {
+        transition(ERROR_SAVE, true);
       })
   };
 
@@ -44,8 +44,8 @@ export default function Appointment(props) {
       .then(res => {
         transition(EMPTY);
       })
-      .catch(res => {
-        transition(ERROR_DELETE)
+      .catch(err => {
+        transition(ERROR_DELETE, true)
       })
   };
 
@@ -108,7 +108,8 @@ export default function Appointment(props) {
         )}
         {mode === ERROR_DELETE && (
           <Error
-            message={"Error deleting"} />
+            message={"Error deleting"}
+            onClose={() => back()} />
         )}
 
       </article>
