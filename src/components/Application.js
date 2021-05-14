@@ -34,7 +34,7 @@ export default function Application() {
   const dailyInterviewers = getInterviewersForDay(state, state.day)
 
   const bookInterview = function (id, interview) {
-    console.log(id, interview);
+    console.log('id:', id, 'interview:', interview);
 
   };
 
