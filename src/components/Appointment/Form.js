@@ -3,8 +3,9 @@ import Button from "components/Button"
 import InterviewerList from "components/InterviewerList"
 
 export default function Form(props) {
-  console.log('props in form', props)
+  console.log('props in form', props, 'props.interviewer', props.interviewer)
   const [name, setName] = useState(props.name || '');
+  //why is this not correctly selecting interviewer? prop is correct FIXFIX
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
   const reset = function () {
@@ -15,10 +16,6 @@ export default function Form(props) {
   const cancel = function () {
     reset();
     props.onCancel();
-  }
-
-  const save = function () {
-
   }
 
   return (

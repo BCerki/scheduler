@@ -14,8 +14,9 @@ export default function Appointment(props) {
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
-  const CONFIRM = "CONFIRM"
-  const DELETING = "DELETING"
+  const CONFIRM = "CONFIRM";
+  const DELETING = "DELETING";
+  const EDIT = "EDIT";
 
   console.log('props in index.js:', props)
 
@@ -73,10 +74,20 @@ export default function Appointment(props) {
             onSave={save}
             onCancel={() => { back() }} />}
 
+        {mode === EDIT &&
+          <Form
+            name={props.interview.student}
+            interviewer={props.interview.interviewer.name}
+            interviewers={props.interviewers}
+            onSave={save}
+            onCancel={() => { back() }} />}
+
+
         {mode === SHOW && (
           <Show
             student={props.interview.student}
             interviewer={props.interview.interviewer}
+            onEdit={() => transition(EDIT)}
             onDelete={() => transition(CONFIRM)}
           />
         )}
