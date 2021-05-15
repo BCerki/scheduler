@@ -38,17 +38,19 @@ const useApplicationHook = function () {
     let apptArray = [];
     let spotsArray = [];
     let dayObject = {};
+    let dayId = null;
 
     for (const element of state.days) {
+      //Figure out which day the input appointment is on (using the appt id)
       if (element.appointments.includes(id)) {
-        //Figure out which day the input appointment is on (using the appt id)
+        //Save some references in variables to use later
         dayName = element.name
+        dayId = element.id;
         //Get an array that contains all the appointment ids for that day
         apptArray = [...element.appointments]
         dayObject = { ...element };
       }
     }
-    // console.log('dayObject', dayObject)
 
     //they're in order, so maybe you could do this with math instead
     //Grab the appointment details from state for each other appts in the day's array
@@ -61,23 +63,23 @@ const useApplicationHook = function () {
     //If the appointment details are null, it means there's no appointment booked, so get a count of how many nulls are in the day
     const spotsRemaining = spotsArray.filter(interview => interview === null).length;
 
-    // const updatedDay = {
-    //   ...dayObject,
-    //   spots: spotsRemaining
-    // }
-    // console.log('updatedDayObject', updatedDay)
 
-    // const updatedDays = [...state.days]
+    //copy the book interview workflow
+    const day = {
+      //grab the single day index number by subtracting 1
+      ...state.days[dayId - 1],
+      spots: spotsRemaining
+    };
 
-    // console.log('updatedDays before', updatedDays)
-    // //use the numbers minus 1 to get the array index
-    // updatedDays[id - 1] = updatedDay;
+    // copy days from state
+    const days = [...state.days]
 
-    // console.log('updatedDays after', updatedDays)
+    //update the relevant value
+    days[dayId - 1] = day;
 
-    console.log('state', state)
-    return spotsRemaining;
+    return days;
   };
+  console.log('state', state)
 
   //interview manipulation functions
   const bookInterview = function (id, interview) {
@@ -93,12 +95,15 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
+    const days = updateSpots(id);
+
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
-        updateSpots(1);
         setState({
           ...state,
-          appointments
+          appointments,
+          //state changes, but no render
+          days
         })
       })
     // .catch(err => console.log('Error:', err.message))
@@ -115,11 +120,14 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
+    const days = updateSpots(id);
+
     return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
         setState({
           ...state,
-          appointments
+          appointments,
+          days
         })
       })
     // .catch(err => {
