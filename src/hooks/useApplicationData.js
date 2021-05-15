@@ -52,6 +52,10 @@ const useApplicationHook = function () {
       }
     }
 
+
+
+
+
     //they're in order, so maybe you could do this with math instead
     //Grab the appointment details from state for each other appts in the day's array
     for (const element of apptArray) {
@@ -60,35 +64,17 @@ const useApplicationHook = function () {
       }
     }
 
-    //If the appointment details are null, it means there's no appointment booked, so get a count of how many nulls are in the day
-
-    //this is the issue--the count happens before the deletion FIXFIX
+    //If the appointment details are null, it means there's no appointment booked, so get a count of how many nulls are in the day (BEFORE the new booking/deletion happens)
     const spotsRemaining = spotsArray.filter(interview => interview === null).length;
 
-    console.log('spotsRemaining', spotsRemaining)
-
-
-    //copy the book interview workflow
-    const day = {
-      //grab the single day index number by subtracting 1
-      ...state.days[dayId - 1],
-      spots: spotsRemaining
-    };
-
-    // copy days from state
-    const days = [...state.days]
-
-    //update the relevant value
-    days[dayId - 1] = day;
-
-    return days;
+    return { spotsRemaining, dayId };
   };
-  console.log('state', state)
+
 
   //interview manipulation functions
   const bookInterview = function (id, interview) {
-    // console.log('id:', id, 'interview:', interview);
 
+    //Create variables with new interview info to ultimately be used to change state
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -99,19 +85,30 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
-    const days = updateSpots(id);
-    console.log('days in bookinterview', days)
+    //Create variables with new spot number info to ultimately be used to change state
+    const { spotsRemaining, dayId } = updateSpots(id);
+
+    const day = {
+      //grab the single day index number by subtracting 1
+      ...state.days[dayId - 1],
+      spots: spotsRemaining - 1
+    };
+
+
+    const days = [...state.days]
+    days[dayId - 1] = day;
+
 
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
         setState({
           ...state,
           appointments,
-          //FIXFISstate changes, but no render
+
           days
         })
       })
-    // .catch(err => console.log('Error:', err.message))
+    //catch will be handled elsewhere
   };
 
   const cancelInterview = function (id) {
@@ -125,8 +122,18 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
-    const days = updateSpots(id);
-    console.log('day in cancelinterview', days)
+    //Create variables with new spot number info to ultimately be used to change state
+    const { spotsRemaining, dayId } = updateSpots(id);
+
+    const day = {
+      //grab the single day index number by subtracting 1
+      ...state.days[dayId - 1],
+      spots: spotsRemaining + 1
+    };
+
+    const days = [...state.days]
+    days[dayId - 1] = day;
+
 
     return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
@@ -136,11 +143,8 @@ const useApplicationHook = function () {
           days
         })
       })
-    // .catch(err => {
-    //   console.log('Error:', err.message)
-    // })
+    //catch will be handled elsewhere
   };
-
 
   return { state, setDay, bookInterview, cancelInterview };
 }
