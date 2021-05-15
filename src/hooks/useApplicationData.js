@@ -61,7 +61,11 @@ const useApplicationHook = function () {
     }
 
     //If the appointment details are null, it means there's no appointment booked, so get a count of how many nulls are in the day
+
+    //this is the issue--the count happens before the deletion FIXFIX
     const spotsRemaining = spotsArray.filter(interview => interview === null).length;
+
+    console.log('spotsRemaining', spotsRemaining)
 
 
     //copy the book interview workflow
@@ -96,13 +100,14 @@ const useApplicationHook = function () {
     };
 
     const days = updateSpots(id);
+    console.log('days in bookinterview', days)
 
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
         setState({
           ...state,
           appointments,
-          //state changes, but no render
+          //FIXFISstate changes, but no render
           days
         })
       })
@@ -121,6 +126,7 @@ const useApplicationHook = function () {
     };
 
     const days = updateSpots(id);
+    console.log('day in cancelinterview', days)
 
     return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
