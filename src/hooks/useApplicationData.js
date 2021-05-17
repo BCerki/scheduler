@@ -34,12 +34,15 @@ const useApplicationHook = function () {
 
   //spots updating
   const updateSpots = function (id) {
+    //this could be a helper function
+    //pass in dayName, days, appointments
     let dayName = null;
     let apptArray = [];
     let spotsArray = [];
     let dayObject = {};
     let dayId = null;
 
+    //use .find to get the whole thing
     for (const element of state.days) {
       //Figure out which day the input appointment is on (using the appt id)
       if (element.appointments.includes(id)) {
@@ -53,7 +56,7 @@ const useApplicationHook = function () {
     }
 
 
-
+    //try to use reduce to calculate?
 
 
     //they're in order, so maybe you could do this with math instead
@@ -68,6 +71,9 @@ const useApplicationHook = function () {
     const spotsRemaining = spotsArray.filter(interview => interview === null).length;
 
     return { spotsRemaining, dayId };
+    //around 19min
+    // 23:57 is the map for days
+    //(day => day.name === day.name === dayName ? newDay : day)
   };
 
 
