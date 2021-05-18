@@ -33,25 +33,20 @@ const useApplicationHook = function () {
 
 
   //spots updating
-  const updateSpots = function (id, state) {
-    //grab the appointments array that the id belongs to
-    let dayCopy = {};
-    let appointmentsInDay = null;
-    for (const day of state.days) {
-      if (day.appointments.includes(id)) {
-        dayCopy = { ...day };
-        appointmentsInDay = day.appointments;
-      }
-    }
-    //count how many interviews are null (meaning the spot is available)
-    //do this better with reduce FIXFIX
-    let spotsRemaining = 0;
-    const nullArray = appointmentsInDay.map(appt => {
-      if (!state.appointments[appt].interview) {
-        spotsRemaining++;
-      }
-    });
 
+  const updateSpots = function (id) {
+    //grab the appointments array that the id belongs to
+    const dayCopy = state.days.find(day => day.appointments.includes(id));
+
+    const appointmentsInDay = dayCopy.appointments;
+
+    const spotsRemaining = appointmentsInDay.reduce((tally, appt) => {
+      if (!state.appointments[appt].interview) {
+        tally++;
+      }
+      return tally;
+    }, 0);
+    console.log(spotsRemaining);
     //add the spotsRemaining to the copied day object
     dayCopy.spots = spotsRemaining;
 
@@ -64,6 +59,35 @@ const useApplicationHook = function () {
     return updatedDays;
 
   };
+
+  ////THIS VERSION HAS STATE ISSUE
+  // const updateSpots = function (id, state) {
+  //   //grab the appointments array that the id belongs to
+  //   const dayCopy = state.days.find(day => day.appointments.includes(id));
+
+  //   const appointmentsInDay = dayCopy.appointments;
+
+  //   //count how many interviews are null (meaning the spot is available)
+  //   //do this better with reduce FIXFIX
+  //   let spotsRemaining = 0;
+  //   const nullArray = appointmentsInDay.map(appt => {
+  //     if (!state.appointments[appt].interview) {
+  //       spotsRemaining++;
+  //     }
+  //   });
+
+  //   //add the spotsRemaining to the copied day object
+  //   dayCopy.spots = spotsRemaining;
+
+  //   //copy the days array
+  //   const daysCopy = [...state.days];
+
+  //   //add the updated day obj to the copied days array
+  //   const updatedDays = daysCopy.map(element => element.id === dayCopy.id ? dayCopy : element);
+
+  //   return updatedDays;
+
+  // };
 
 
   //interview manipulation functions
@@ -80,14 +104,11 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
-
-
-
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
         const days = updateSpots(id, state);
         setState(prev => ({
-          ...state,
+          ...prev,
           appointments,
           days
         }))
@@ -114,7 +135,7 @@ const useApplicationHook = function () {
       .then(resolve => {
         const days = updateSpots(id, state);
         setState(prev => ({
-          ...state,
+          ...prev,
           appointments,
           days
         }))
