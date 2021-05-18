@@ -79,5 +79,17 @@ export default {
         data: fixtures.interviewers
       });
     }
+  }),
+  put: jest.fn((url, interview) => {
+
+    //FIXFIX is /1 ok?
+    if (url === "/api/appointments/1") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "No Content"
+      });
+    }
+
+
   })
-}
+};
