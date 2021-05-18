@@ -33,47 +33,36 @@ const useApplicationHook = function () {
 
 
   //spots updating
-  const updateSpots = function (id) {
-    //this could be a helper function
-    //pass in dayName, days, appointments
-    let dayName = null;
-    let apptArray = [];
-    let spotsArray = [];
-    let dayObject = {};
-    let dayId = null;
-
-    //use .find to get the whole thing
-    for (const element of state.days) {
-      //Figure out which day the input appointment is on (using the appt id)
-      if (element.appointments.includes(id)) {
-        //Save some references in variables to use later
-        dayName = element.name
-        dayId = element.id;
-        //Get an array that contains all the appointment ids for that day
-        apptArray = [...element.appointments]
-        dayObject = { ...element };
+  const updateSpots = function (id, state) {
+    //grab the appointments array that the id belongs to
+    let dayCopy = {};
+    let appointmentsInDay = null;
+    for (const day of state.days) {
+      if (day.appointments.includes(id)) {
+        dayCopy = { ...day };
+        appointmentsInDay = day.appointments;
       }
     }
-
-
-    //try to use reduce to calculate?
-
-
-    //they're in order, so maybe you could do this with math instead
-    //Grab the appointment details from state for each other appts in the day's array
-    for (const element of apptArray) {
-      if (element === state.appointments[element].id) {
-        spotsArray.push(state.appointments[element].interview)
+    //count how many interviews are null (meaning the spot is available)
+    //do this better with reduce FIXFIX
+    let spotsRemaining = 0;
+    const nullArray = appointmentsInDay.map(appt => {
+      if (!state.appointments[appt].interview) {
+        spotsRemaining++;
       }
-    }
+    });
 
-    //If the appointment details are null, it means there's no appointment booked, so get a count of how many nulls are in the day (BEFORE the new booking/deletion happens)
-    const spotsRemaining = spotsArray.filter(interview => interview === null).length;
+    //add the spotsRemaining to the copied day object
+    dayCopy.spots = spotsRemaining;
 
-    return { spotsRemaining, dayId };
-    //around 19min
-    // 23:57 is the map for days
-    //(day => day.name === day.name === dayName ? newDay : day)
+    //copy the days array
+    const daysCopy = [...state.days];
+
+    //add the updated day obj to the copied days array
+    const updatedDays = daysCopy.map(element => element.id === dayCopy.id ? dayCopy : element);
+
+    return updatedDays;
+
   };
 
 
@@ -91,29 +80,19 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
-    //Create variables with new spot number info to ultimately be used to change state
-    const { spotsRemaining, dayId } = updateSpots(id);
 
-    const day = {
-      //grab the single day index number by subtracting 1
-      ...state.days[dayId - 1],
-      spots: spotsRemaining - 1
-    };
-
-
-    const days = [...state.days]
-    days[dayId - 1] = day;
 
 
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
-        setState({
+        const days = updateSpots(id, state);
+        setState(prev => ({
           ...state,
           appointments,
-
           days
-        })
+        }))
       })
+
     //catch will be handled elsewhere
   };
 
@@ -128,26 +107,17 @@ const useApplicationHook = function () {
       [id]: appointment
     };
 
-    //Create variables with new spot number info to ultimately be used to change state
-    const { spotsRemaining, dayId } = updateSpots(id);
 
-    const day = {
-      //grab the single day index number by subtracting 1
-      ...state.days[dayId - 1],
-      spots: spotsRemaining + 1
-    };
-
-    const days = [...state.days]
-    days[dayId - 1] = day;
 
 
     return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
-        setState({
+        const days = updateSpots(id, state);
+        setState(prev => ({
           ...state,
           appointments,
           days
-        })
+        }))
       })
     //catch will be handled elsewhere
   };
