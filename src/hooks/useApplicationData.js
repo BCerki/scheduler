@@ -1,6 +1,6 @@
 //FIXFIX if you don't selevt interterviewer, error
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from 'axios';
 
 const useApplicationHook = function () {
@@ -34,19 +34,21 @@ const useApplicationHook = function () {
 
   //spots updating
 
-  const updateSpots = function (id) {
-    //grab the appointments array that the id belongs to
+  const updateSpots = function (id, appointments) {
+    //make a copy of the day object that the id belongs to
     const dayCopy = state.days.find(day => day.appointments.includes(id));
 
     const appointmentsInDay = dayCopy.appointments;
 
+    //sum the number of interviews that are null (if interview is null, the spot is open)
     const spotsRemaining = appointmentsInDay.reduce((tally, appt) => {
-      if (!state.appointments[appt].interview) {
+      if (!appointments[appt].interview) {
         tally++;
       }
       return tally;
     }, 0);
-    console.log(spotsRemaining);
+    console.log('spotsRemaining', spotsRemaining);
+
     //add the spotsRemaining to the copied day object
     dayCopy.spots = spotsRemaining;
 
@@ -54,8 +56,10 @@ const useApplicationHook = function () {
     const daysCopy = [...state.days];
 
     //add the updated day obj to the copied days array
-    const updatedDays = daysCopy.map(element => element.id === dayCopy.id ? dayCopy : element);
+    const updatedDays = daysCopy.map(day => day.id === dayCopy.id ? dayCopy : day);
 
+    console.log('updatedDays', updatedDays)
+    console.log('state.days (to confirm no mutation', state.days)
     return updatedDays;
 
   };
@@ -106,7 +110,7 @@ const useApplicationHook = function () {
 
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(resolve => {
-        const days = updateSpots(id, state);
+        const days = updateSpots(id, appointments);
         setState(prev => ({
           ...prev,
           appointments,
@@ -115,6 +119,7 @@ const useApplicationHook = function () {
       })
 
     //catch will be handled elsewhere
+
   };
 
   const cancelInterview = function (id) {
@@ -133,7 +138,7 @@ const useApplicationHook = function () {
 
     return axios.delete(`/api/appointments/${id}`)
       .then(resolve => {
-        const days = updateSpots(id, state);
+        const days = updateSpots(id, appointments);
         setState(prev => ({
           ...prev,
           appointments,
