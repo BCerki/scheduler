@@ -7,13 +7,10 @@ import {
   waitForElement,
   fireEvent,
   getByText,
-  prettyDOM,
   getAllByTestId,
   getByAltText,
   getByPlaceholderText,
-  queryByTestId,
   queryByText,
-  getByTestId,
 } from "@testing-library/react";
 
 import Application from "components/Application";
