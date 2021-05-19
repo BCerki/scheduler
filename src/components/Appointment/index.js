@@ -35,7 +35,7 @@ export default function Appointment(props) {
       })
       .catch(err => {
         transition(ERROR_SAVE, true);
-        console.log(err.message);
+        // console.log(err.message);
       })
   };
 
@@ -47,7 +47,7 @@ export default function Appointment(props) {
       })
       .catch(err => {
         transition(ERROR_DELETE, true)
-        console.log(err.message);
+        // console.log(err.message);
       })
   };
 
