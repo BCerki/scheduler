@@ -6,7 +6,7 @@ import "components/InterviewerList.scss"
 
 
 function InterviewerList(props) {
-
+  //Create individual interviwer items
   const interviewers = props.interviewers.map(interviewer => {
     return (
       <InterviewerListItem
@@ -17,6 +17,7 @@ function InterviewerList(props) {
         setInterviewer={event => props.setInterviewer(interviewer.id)}
       />)
   })
+  //InterviewerList component
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
@@ -27,6 +28,7 @@ function InterviewerList(props) {
   )
 
 }
+//Prop types validation
 InterviewerList.propTypes = {
   interviewers: PropTypes.array.isRequired
 }

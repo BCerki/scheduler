@@ -1,5 +1,3 @@
-//FIXFIX if you don't selevt interterviewer, error
-
 import React, { useState, useEffect, useCallback } from "react";
 import axios from 'axios';
 

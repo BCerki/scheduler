@@ -21,8 +21,7 @@ export default function Appointment(props) {
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
 
-  // console.log('props in index.js:', props)
-
+  //Button click functions
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -35,7 +34,7 @@ export default function Appointment(props) {
       })
       .catch(err => {
         transition(ERROR_SAVE, true);
-        // console.log(err.message);
+        // console.log(err.message); Commented out because they make the tests fail
       })
   };
 
@@ -51,12 +50,12 @@ export default function Appointment(props) {
       })
   };
 
-
-
+  //Bring in functions from custom hook
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY)
 
-  //props could be wrong below
   //when do I need to use callbacks vs functions in my components????? FIXFIX
+
+  //Appointment component
   return (
     <>
       <Header time={props.time} />

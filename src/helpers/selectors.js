@@ -10,14 +10,13 @@ const getAppointmentsForDay = function (state, day) {
 
 
 
-
 const getInterview = function (state, interview) {
   //validate--if there's no interview, return null
   if (!interview) {
     return null;
   }
 
-  //grab the interviewer's details based on their id
+  //pull the interviewer's details based on their id
   let interviewerDetails = null;
   for (const key in state.interviewers) {
     if (Number(key) === interview.interviewer) {
@@ -32,7 +31,7 @@ const getInterview = function (state, interview) {
 };
 
 const getInterviewersForDay = function (state, day) {
-  //grab a particular day's appointments
+  //pull a particular day's appointments
   const dailyInterviewers = state.days.find(weekday => weekday.name === day);
   //if the day has appointments, pull the appointment details based on their id number
   if (dailyInterviewers) {
@@ -41,7 +40,7 @@ const getInterviewersForDay = function (state, day) {
   return [];
 };
 export { getAppointmentsForDay, getInterview, getInterviewersForDay };
-////Test Code
+////Test Code FIXFIX
 // const state = {
 //   days: [
 //     {
