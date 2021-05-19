@@ -57,8 +57,6 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  //when do I need to use callbacks vs functions in my components????? FIXFIX
-
   //Appointment component
   return (
     <>
@@ -71,7 +69,7 @@ export default function Appointment(props) {
         {mode === CONFIRM && (
           <Confirm
             message={"Are you sure you would like to delete?"}
-            onCancel={() => back()}
+            onCancel={back}
             onConfirm={cancel}
           />
         )}
@@ -82,9 +80,7 @@ export default function Appointment(props) {
           <Form
             interviewers={props.interviewers}
             onSave={save}
-            onCancel={() => {
-              back();
-            }}
+            onCancel={back}
           />
         )}
 
@@ -94,9 +90,7 @@ export default function Appointment(props) {
             interviewer={props.interview.interviewer.id}
             interviewers={props.interviewers}
             onSave={save}
-            onCancel={() => {
-              back();
-            }}
+            onCancel={back}
           />
         )}
 
@@ -110,10 +104,10 @@ export default function Appointment(props) {
         )}
 
         {mode === ERROR_SAVE && (
-          <Error message={"Error saving"} onClose={() => back()} />
+          <Error message={"Error saving"} onClose={back} />
         )}
         {mode === ERROR_DELETE && (
-          <Error message={"Error deleting"} onClose={() => back()} />
+          <Error message={"Error deleting"} onClose={back} />
         )}
       </article>
     </>
