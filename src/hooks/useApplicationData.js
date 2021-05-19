@@ -47,7 +47,7 @@ const useApplicationHook = function () {
       }
       return tally;
     }, 0);
-    console.log('spotsRemaining', spotsRemaining);
+    // console.log('spotsRemaining', spotsRemaining);
 
     //add the spotsRemaining to the copied day object
     dayCopy.spots = spotsRemaining;
@@ -58,8 +58,8 @@ const useApplicationHook = function () {
     //add the updated day obj to the copied days array
     const updatedDays = daysCopy.map(day => day.id === dayCopy.id ? dayCopy : day);
 
-    console.log('updatedDays', updatedDays)
-    console.log('state.days (to confirm no mutation', state.days)
+    // console.log('updatedDays', updatedDays)
+    // console.log('state.days (to confirm no mutation', state.days)
     return updatedDays;
 
   };
