@@ -188,7 +188,5 @@ describe("Application", () => {
     );
 
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
-
-    //FIXFIXtest close buttons if you have time
   });
 });
