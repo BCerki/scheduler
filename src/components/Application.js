@@ -1,7 +1,11 @@
 //Import React, and helper functions
 import React from "react";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
-import useApplicationData from "../hooks/useApplicationData"
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "helpers/selectors";
+import useApplicationData from "../hooks/useApplicationData";
 
 //Import components
 import DayList from "components/DayList";
@@ -12,29 +16,29 @@ import "components/Application.scss";
 
 export default function Application() {
   //Pull in state and functions from custom hook
-  const {
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  } = useApplicationData();
+  const { state, setDay, bookInterview, cancelInterview } =
+    useApplicationData();
 
   //Use helper functions to put API data into a more usable form
-  const dailyInterviewers = getInterviewersForDay(state, state.day)
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
 
-  const dailyAppointments = getAppointmentsForDay(state, state.day).map(appointment => {
-    const interview = getInterview(state, appointment.interview);
-    //Create the individual appointment components
-    return <Appointment
-      key={appointment.id}
-      id={appointment.id}
-      time={appointment.time}
-      interview={interview}
-      interviewers={dailyInterviewers}
-      bookInterview={bookInterview}
-      cancelInterview={cancelInterview}
-    />
-  })
+  const dailyAppointments = getAppointmentsForDay(state, state.day).map(
+    (appointment) => {
+      const interview = getInterview(state, appointment.interview);
+      //Create the individual appointment components
+      return (
+        <Appointment
+          key={appointment.id}
+          id={appointment.id}
+          time={appointment.time}
+          interview={interview}
+          interviewers={dailyInterviewers}
+          bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
+        />
+      );
+    }
+  );
 
   //Main component
   return (
@@ -47,11 +51,7 @@ export default function Application() {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={state.days}
-            day={state.day}
-            setDay={setDay}
-          />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"

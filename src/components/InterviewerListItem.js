@@ -1,17 +1,17 @@
 import React from "react";
-import classNames from 'classnames'
+import classNames from "classnames";
 import "components/InterviewerListItem.scss";
 import { action } from "@storybook/addon-actions/dist/preview";
 
 export default function InterviewerListItem(props) {
   //Conditional styling
-  const interviewerClass = classNames("interviewers__item", { "interviewers__item--selected": props.selected });
+  const interviewerClass = classNames("interviewers__item", {
+    "interviewers__item--selected": props.selected,
+  });
 
   //InterviewerListItem component
   return (
-    <li className={interviewerClass}
-      onClick={props.setInterviewer}
-    >
+    <li className={interviewerClass} onClick={props.setInterviewer}>
       <img
         className="interviewers__item-image"
         src={props.avatar}
@@ -19,6 +19,5 @@ export default function InterviewerListItem(props) {
       />
       {props.selected && props.name}
     </li>
-  )
-
+  );
 }

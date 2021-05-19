@@ -1,14 +1,14 @@
 const getAppointmentsForDay = function (state, day) {
   //grab a particular day's appointments
-  const dailyAppointments = state.days.find(weekday => weekday.name === day);
+  const dailyAppointments = state.days.find((weekday) => weekday.name === day);
   //if the day has appointments, pull the appointment details based on their id number
   if (dailyAppointments) {
-    return dailyAppointments.appointments.map(appt => state.appointments[appt])
+    return dailyAppointments.appointments.map(
+      (appt) => state.appointments[appt]
+    );
   }
   return [];
 };
-
-
 
 const getInterview = function (state, interview) {
   //validate--if there's no interview, return null
@@ -26,16 +26,16 @@ const getInterview = function (state, interview) {
 
   return {
     student: interview.student,
-    interviewer: interviewerDetails
+    interviewer: interviewerDetails,
   };
 };
 
 const getInterviewersForDay = function (state, day) {
   //pull a particular day's appointments
-  const dailyInterviewers = state.days.find(weekday => weekday.name === day);
+  const dailyInterviewers = state.days.find((weekday) => weekday.name === day);
   //if the day has appointments, pull the appointment details based on their id number
   if (dailyInterviewers) {
-    return dailyInterviewers.interviewers.map(id => state.interviewers[id])
+    return dailyInterviewers.interviewers.map((id) => state.interviewers[id]);
   }
   return [];
 };

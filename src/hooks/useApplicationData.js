@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const useApplicationHook = function () {
   //State updates
@@ -7,34 +7,31 @@ const useApplicationHook = function () {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
-  })
-  const setDay = day => setState({ ...state, day });
+    interviewers: {},
+  });
+  const setDay = (day) => setState({ ...state, day });
 
   //Custom hook
   useEffect(() => {
     Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('/api/interviewers')
-    ])
-      .then(all => {
-        setState(prev => ({
-          ...prev,
-          days: all[0].data,
-          appointments: all[1].data,
-          interviewers: all[2].data
-        }))
-
-      });
-  }, [])
-
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ]).then((all) => {
+      setState((prev) => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data,
+      }));
+    });
+  }, []);
 
   //spots updating
 
   const updateSpots = function (id, appointments) {
     //make a copy of the day object that the id belongs to
-    const dayCopy = state.days.find(day => day.appointments.includes(id));
+    const dayCopy = state.days.find((day) => day.appointments.includes(id));
 
     const appointmentsInDay = dayCopy.appointments;
 
@@ -54,12 +51,13 @@ const useApplicationHook = function () {
     const daysCopy = [...state.days];
 
     //add the updated day obj to the copied days array
-    const updatedDays = daysCopy.map(day => day.id === dayCopy.id ? dayCopy : day);
+    const updatedDays = daysCopy.map((day) =>
+      day.id === dayCopy.id ? dayCopy : day
+    );
 
     // console.log('updatedDays', updatedDays)
     // console.log('state.days (to confirm no mutation', state.days)
     return updatedDays;
-
   };
 
   ////THIS VERSION HAS STATE ISSUE
@@ -91,62 +89,56 @@ const useApplicationHook = function () {
 
   // };
 
-
   //interview manipulation functions
   const bookInterview = function (id, interview) {
-
     //Create variables with new interview info to ultimately be used to change state
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview },
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
-    return axios.put(`/api/appointments/${id}`, { interview })
-      .then(resolve => {
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then((resolve) => {
         const days = updateSpots(id, appointments);
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           appointments,
-          days
-        }))
-      })
+          days,
+        }));
+      });
 
     //catch will be handled elsewhere
-
   };
 
   const cancelInterview = function (id) {
     const appointment = {
       ...state.appointments[id],
-      interview: null
+      interview: null,
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
-
-
-
-    return axios.delete(`/api/appointments/${id}`)
-      .then(resolve => {
-        const days = updateSpots(id, appointments);
-        setState(prev => ({
-          ...prev,
-          appointments,
-          days
-        }))
-      })
+    return axios.delete(`/api/appointments/${id}`).then((resolve) => {
+      const days = updateSpots(id, appointments);
+      setState((prev) => ({
+        ...prev,
+        appointments,
+        days,
+      }));
+    });
     //catch will be handled elsewhere
   };
 
   return { state, setDay, bookInterview, cancelInterview };
-}
+};
 
 export default useApplicationHook;

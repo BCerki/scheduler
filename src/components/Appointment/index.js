@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react'
-import "components/Appointment/styles.scss"
-import Header from "components/Appointment/Header"
-import Show from "components/Appointment/Show"
-import Empty from "components/Appointment/Empty"
-import Form from "components/Appointment/Form"
-import Status from "components/Appointment/Status"
-import Confirm from "components/Appointment/Confirm"
-import Error from "components/Appointment/Error"
-import useVisualMode from "../../hooks/useVisualMode"
+import React, { Fragment } from "react";
+import "components/Appointment/styles.scss";
+import Header from "components/Appointment/Header";
+import Show from "components/Appointment/Show";
+import Empty from "components/Appointment/Empty";
+import Form from "components/Appointment/Form";
+import Status from "components/Appointment/Status";
+import Confirm from "components/Appointment/Confirm";
+import Error from "components/Appointment/Error";
+import useVisualMode from "../../hooks/useVisualMode";
 
 export default function Appointment(props) {
   //mode constants
@@ -25,33 +25,37 @@ export default function Appointment(props) {
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer
-    }
+      interviewer,
+    };
     transition(SAVING);
-    props.bookInterview(props.id, interview)
-      .then(res => {
+    props
+      .bookInterview(props.id, interview)
+      .then((res) => {
         transition(SHOW);
       })
-      .catch(err => {
+      .catch((err) => {
         transition(ERROR_SAVE, true);
         // console.log(err.message); Commented out because they make the tests fail
-      })
-  };
+      });
+  }
 
   function cancel(event) {
     transition(DELETING, true);
-    props.cancelInterview(props.id)
-      .then(res => {
+    props
+      .cancelInterview(props.id)
+      .then((res) => {
         transition(EMPTY);
       })
-      .catch(err => {
-        transition(ERROR_DELETE, true)
+      .catch((err) => {
+        transition(ERROR_DELETE, true);
         // console.log(err.message);
-      })
-  };
+      });
+  }
 
   //Bring in functions from custom hook
-  const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY)
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
 
   //when do I need to use callbacks vs functions in my components????? FIXFIX
 
@@ -60,39 +64,41 @@ export default function Appointment(props) {
     <>
       <Header time={props.time} />
       <article className="appointment" data-testid="appointment">
+        {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
 
-        {mode === EMPTY &&
-          <Empty
-            onAdd={() => transition(CREATE)} />}
+        {mode === SAVING && <Status message={"Saving..."} />}
 
-        {mode === SAVING &&
-          <Status
-            message={"Saving..."} />}
-
-        {mode === CONFIRM &&
+        {mode === CONFIRM && (
           <Confirm
             message={"Are you sure you would like to delete?"}
             onCancel={() => back()}
-            onConfirm={cancel} />}
+            onConfirm={cancel}
+          />
+        )}
 
-        {mode === DELETING &&
-          <Status
-            message={"Deleting..."} />}
+        {mode === DELETING && <Status message={"Deleting..."} />}
 
-        {mode === CREATE &&
+        {mode === CREATE && (
           <Form
             interviewers={props.interviewers}
             onSave={save}
-            onCancel={() => { back() }} />}
+            onCancel={() => {
+              back();
+            }}
+          />
+        )}
 
-        {mode === EDIT &&
+        {mode === EDIT && (
           <Form
             name={props.interview.student}
             interviewer={props.interview.interviewer.id}
             interviewers={props.interviewers}
             onSave={save}
-            onCancel={() => { back() }} />}
-
+            onCancel={() => {
+              back();
+            }}
+          />
+        )}
 
         {mode === SHOW && (
           <Show
@@ -104,16 +110,12 @@ export default function Appointment(props) {
         )}
 
         {mode === ERROR_SAVE && (
-          <Error
-            message={"Error saving"}
-            onClose={() => back()} />
+          <Error message={"Error saving"} onClose={() => back()} />
         )}
         {mode === ERROR_DELETE && (
-          <Error
-            message={"Error deleting"}
-            onClose={() => back()} />
+          <Error message={"Error deleting"} onClose={() => back()} />
         )}
-
       </article>
-    </>)
+    </>
+  );
 }
