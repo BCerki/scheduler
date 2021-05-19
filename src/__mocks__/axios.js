@@ -82,14 +82,19 @@ export default {
   }),
   put: jest.fn((url, interview) => {
 
-    //FIXFIX is /1 ok?
-    if (url === "/api/appointments/1") {
+    if (url.includes("/api/appointments")) {
       return Promise.resolve({
         status: 204,
         statusText: "No Content"
       });
     }
-
-
+  }),
+  delete: jest.fn((url, interview) => {
+    if (url.includes("/api/appointments")) {
+      return Promise.resolve({
+        status: 204,
+        statusText: "No Content"
+      });
+    }
   })
 };
