@@ -8,6 +8,12 @@ import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
 import Error from "components/Appointment/Error";
 import useVisualMode from "../../hooks/useVisualMode";
+//for netlify
+import axios from "axios";
+
+if (process.env.REACT_APP_API_BASE_URL) {
+  axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+}
 
 export default function Appointment(props) {
   //mode constants
