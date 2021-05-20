@@ -47,5 +47,5 @@ workflows:
           filters:
             branches:
               ignore: production
-          requires:
-            - build
+                requires:
+                  - build
