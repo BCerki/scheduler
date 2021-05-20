@@ -31,7 +31,7 @@ deploy:
           - "e6:81:e9:26:53:86:5f:b8:b9:c3:c0:cf:14:23:bd:29"
     - checkout
     - run:
-        name: Push Master to Production
+        name: Push master to production
         command: |
           git push https://github.com/BCerki/scheduler.git master:production
 
